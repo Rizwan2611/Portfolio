@@ -22,7 +22,7 @@ export function App() {
   const [hasUnfolded, setHasUnfolded] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<ThemeMode>('sepia');
   const [activeSection, setActiveSection] = useState<SectionId>('frontpage');
-  const [turnDirection, setTurnDirection] = useState<'next' | 'prev'>('next');
+  const [turnDirection, setTurnDirection] = useState<'forward' | 'backward'>('forward');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
     try {
@@ -65,7 +65,7 @@ export function App() {
     
     if (newIdx !== oldIdx) {
       soundManager.playPageTurn();
-      setTurnDirection(newIdx > oldIdx ? 'next' : 'prev');
+      setTurnDirection(newIdx > oldIdx ? 'forward' : 'backward');
       setActiveSection(sec);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -86,7 +86,6 @@ export function App() {
   // Keyboard Arrow Page-Turning Controls (Left/Right Arrow Keys)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore key events if modal or input is active
       if (isSearchOpen || isClippingsOpen || selectedArticle || ['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
@@ -103,7 +102,7 @@ export function App() {
   }, [isSearchOpen, isClippingsOpen, selectedArticle, turnNextPage, turnPrevPage]);
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] transition-colors duration-400 newspaper-crease relative perspective-broadsheet">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] transition-colors duration-400 newspaper-crease relative perspective-newspaper overflow-x-hidden">
       
       {/* Desktop-only subtle ink cursor */}
       <CustomInkCursor />
@@ -129,22 +128,27 @@ export function App() {
       {/* Sticky Section Navigator Page Tabs */}
       <SectionNav activeSection={activeSection} onSelectSection={goToPage} />
 
-      {/* 3D Newspaper Page Container */}
-      <main className="w-full relative min-h-screen">
+      {/* Standalone Broadsheet Newspaper Page Viewport */}
+      <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-6 relative min-h-[85vh]">
+        
+        {/* Individual Paper Sheet Page Container with 3D Page Turn Animation */}
         <div 
           key={activeSection}
-          className={`w-full ${turnDirection === 'next' ? 'animate-page-turn-next' : 'animate-page-turn-prev'}`}
+          className={`w-full border-4 border-double border-[var(--border-dark)] bg-[var(--bg-paper-card)] shadow-2xl p-4 sm:p-8 min-h-[85vh] relative rounded-xs newspaper-crease ${
+            turnDirection === 'forward' ? 'animate-flip-forward' : 'animate-flip-backward'
+          }`}
         >
-          {/* Top Page Folio Header Bar */}
-          <div className="border-b border-[var(--border-dark)] py-2 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between font-typewriter text-xs text-[var(--text-muted)] uppercase tracking-wider">
-            <span>THE RIZWAN TIMES • EDITION NO. 026</span>
-            <span className="font-bold text-[var(--accent-red)]">
-              {SECTIONS[currentPageIdx]?.label} (PAGE 0{currentPageIdx + 1} OF 05)
+          {/* Top Page Folio Line */}
+          <div className="border-b-2 border-double border-[var(--border-dark)] pb-2 mb-6 flex items-center justify-between font-typewriter text-xs text-[var(--text-muted)] uppercase tracking-wider">
+            <span>THE RIZWAN TIMES • ISSUE 026</span>
+            <span className="font-bold text-[var(--accent-red)] flex items-center gap-1.5">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>{SECTIONS[currentPageIdx]?.label} (PAGE 0{currentPageIdx + 1} OF 05)</span>
             </span>
             <span>MUMBAI • INDIA</span>
           </div>
 
-          {/* PAGE 01: Front Page Intro & Lead Story */}
+          {/* INDIVIDUAL PAGE 01: Front Page Intro & Bio */}
           {activeSection === 'frontpage' && (
             <HeroFrontPage
               onOpenArticle={setSelectedArticle}
@@ -153,7 +157,7 @@ export function App() {
             />
           )}
 
-          {/* PAGE 02: Selected Work & Investigations */}
+          {/* INDIVIDUAL PAGE 02: Selected Work & Investigations */}
           {activeSection === 'projects' && (
             <FeaturedProjects
               onOpenArticle={setSelectedArticle}
@@ -162,32 +166,40 @@ export function App() {
             />
           )}
 
-          {/* PAGE 03: Skills Cortex & Transformation */}
+          {/* INDIVIDUAL PAGE 03: Skills Cortex & Transformation */}
           {activeSection === 'skills' && (
-            <div>
+            <div className="space-y-8">
               <TechSkills />
               <SignatureTransformation />
             </div>
           )}
 
-          {/* PAGE 04: Certifications & Verified Records */}
+          {/* INDIVIDUAL PAGE 04: Certifications & Verified Records */}
           {activeSection === 'certifications' && (
             <CertificationsArchive />
           )}
 
-          {/* PAGE 05: Classifieds & Contact Desk */}
+          {/* INDIVIDUAL PAGE 05: Classifieds & Contact Desk */}
           {activeSection === 'contact' && (
             <ClassifiedsContact />
           )}
 
+          {/* Bottom Page Margin Footer Dateline */}
+          <div className="mt-8 pt-3 border-t border-[var(--border-light)] flex items-center justify-between font-typewriter text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
+            <span>PAGE 0{currentPageIdx + 1} // BROADSHEET EDITION</span>
+            <span className="font-bold text-[var(--text-main)]">THE RIZWAN TIMES • PUBLISHED DAILY</span>
+            <span>PRESS BUREAU 2026</span>
+          </div>
+
         </div>
+
       </main>
 
       {/* Sticky Floating Real Newspaper Page-Turning Controls Bar */}
-      <div className="sticky bottom-4 z-40 max-w-2xl mx-auto px-4 pointer-events-auto">
+      <div className="sticky bottom-4 z-40 max-w-2xl mx-auto px-4 pointer-events-auto my-4">
         <div className="bg-[var(--bg-paper-card)] border-4 border-double border-[var(--border-dark)] shadow-2xl p-2 sm:p-3 flex items-center justify-between font-typewriter text-xs rounded-sm backdrop-blur-xs">
           
-          {/* Turn Previous Page Button */}
+          {/* Turn Previous Page Button (Flips Left-to-Right) */}
           <button
             onClick={turnPrevPage}
             disabled={currentPageIdx === 0}
@@ -198,8 +210,8 @@ export function App() {
             }`}
           >
             <ChevronLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Turn to Page 0{currentPageIdx}</span>
-            <span className="sm:hidden">Prev</span>
+            <span className="hidden sm:inline">Turn Back to Page 0{currentPageIdx}</span>
+            <span className="sm:hidden">Prev Page</span>
           </button>
 
           {/* Active Page Counter Indicator */}
@@ -209,11 +221,11 @@ export function App() {
               <span>PAGE 0{currentPageIdx + 1} OF 05</span>
             </div>
             <span className="text-[9px] text-[var(--text-muted)] font-normal hidden sm:inline">
-              Use ← → Arrow Keys to Turn Pages
+              ← Turn Left / Right → Keys
             </span>
           </div>
 
-          {/* Turn Next Page Button */}
+          {/* Turn Next Page Button (Flips Right-to-Left) */}
           <button
             onClick={turnNextPage}
             disabled={currentPageIdx === sectionOrder.length - 1}
@@ -223,8 +235,8 @@ export function App() {
                 : 'hover:bg-[var(--accent-red)] hover:text-white bg-[var(--bg-primary)] cursor-pointer'
             }`}
           >
-            <span className="hidden sm:inline">Turn to Page 0{currentPageIdx + 2}</span>
-            <span className="sm:hidden">Next</span>
+            <span className="hidden sm:inline">Turn Forward to Page 0{currentPageIdx + 2}</span>
+            <span className="sm:hidden">Next Page</span>
             <ChevronRight className="w-4 h-4" />
           </button>
 

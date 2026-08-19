@@ -195,43 +195,54 @@ body {
   }
 }
 
-/* 3D Real Newspaper Page Turn Animations */
-.perspective-broadsheet {
-  perspective: 2000px;
+/* 3D Newspaper Page Flip Animations (Left-to-Right & Right-to-Left) */
+.perspective-newspaper {
+  perspective: 2500px;
+  perspective-origin: 50% 50%;
 }
 
-@keyframes pageTurnNext {
+@keyframes flipForward {
   0% {
-    opacity: 0.3;
-    transform: rotateY(-18deg) scale(0.97);
-    transform-origin: left center;
-  }
-  100% {
-    opacity: 1;
-    transform: rotateY(0deg) scale(1);
-    transform-origin: left center;
-  }
-}
-
-@keyframes pageTurnPrev {
-  0% {
-    opacity: 0.3;
-    transform: rotateY(18deg) scale(0.97);
+    opacity: 0.2;
+    transform: rotateY(85deg) scale(0.94);
     transform-origin: right center;
+    box-shadow: -25px 0 60px rgba(0, 0, 0, 0.5);
+  }
+  60% {
+    opacity: 0.85;
   }
   100% {
     opacity: 1;
     transform: rotateY(0deg) scale(1);
     transform-origin: right center;
+    box-shadow: 0 15px 40px rgba(23, 22, 21, 0.2);
   }
 }
 
-.animate-page-turn-next {
-  animation: pageTurnNext 0.45s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+@keyframes flipBackward {
+  0% {
+    opacity: 0.2;
+    transform: rotateY(-85deg) scale(0.94);
+    transform-origin: left center;
+    box-shadow: 25px 0 60px rgba(0, 0, 0, 0.5);
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+    transform-origin: left center;
+    box-shadow: 0 15px 40px rgba(23, 22, 21, 0.2);
+  }
 }
 
-.animate-page-turn-prev {
-  animation: pageTurnPrev 0.45s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+.animate-flip-forward {
+  animation: flipForward 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-flip-backward {
+  animation: flipBackward 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Scrollbar */
