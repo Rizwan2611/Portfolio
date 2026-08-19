@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, FileCheck, ExternalLink, X, Clock } from 'lucide-react';
+import { ShieldCheck, FileCheck, ExternalLink, X } from 'lucide-react';
 
 interface CertificationItem {
   id: string;
@@ -26,27 +26,6 @@ const CERTIFICATIONS: CertificationItem[] = [
     image: '/kaggle_python_certificate.png',
     description: 'Official Kaggle Certificate of Completion awarded to Rizwan Salmani on August 3, 2026, verifying core proficiency in Python programming for Data Science and Machine Learning pipelines.',
   },
-  {
-    id: 'cert-data-analyst-ongoing',
-    title: 'PROFESSIONAL DATA ANALYST CERTIFICATION',
-    issuer: 'Advanced Data Science & Analytics Bureau',
-    date: 'ONGOING / IN PROGRESS (2026)',
-    credentialId: 'DATA-ANALYST-IN-PROGRESS',
-    skills: ['Data Analytics', 'SQL Queries', 'Pandas Wrangling', 'Power BI', 'Exploratory Data Analysis', 'Statistical Modeling'],
-    sealText: 'ONGOING PROGRAM',
-    isOngoing: true,
-    description: 'Currently pursuing an intensive Professional Data Analyst Certification focusing on enterprise data warehousing, SQL query optimization, Exploratory Data Analysis (EDA), automated data cleaning pipelines, and interactive executive reporting in Power BI.',
-  },
-  {
-    id: 'cert-fullstack-arch',
-    title: 'FULL-STACK MERN ARCHITECTURE CERTIFICATION',
-    issuer: 'Global Computer Science Standards Board',
-    date: '2026',
-    credentialId: 'CERT-MERN-4402',
-    skills: ['React 19', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Mongoose REST APIs', 'Render Cloud Deployment'],
-    sealText: 'AUDITED & APPROVED',
-    description: 'Comprehensive certification in full-stack web application engineering, RESTful API design, database schema indexing, and cloud deployment pipelines.',
-  },
 ];
 
 export const CertificationsArchive: React.FC = () => {
@@ -62,37 +41,35 @@ export const CertificationsArchive: React.FC = () => {
             SECTION C • CERTIFICATIONS & VERIFIED ARCHIVES
           </div>
           <h2 className="font-headline text-3xl sm:text-4xl font-black uppercase text-[var(--text-main)] tracking-tight">
-            VERIFIED CERTIFICATIONS & DATA ANALYST CREDENTIALS
+            VERIFIED CERTIFICATION RECORD
           </h2>
           <div className="font-serif italic text-sm text-[var(--text-muted)] mt-1">
-            "Formal accreditations in Python Data Science, ongoing Professional Data Analyst training, and Full-Stack Engineering."
+            "Official Kaggle certification in Python Programming & Data Science."
           </div>
         </div>
 
-        {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Certifications Grid (Single Highlighted Featured Certificate Card) */}
+        <div className="max-w-2xl mx-auto">
           {CERTIFICATIONS.map((cert) => (
             <div
               key={cert.id}
               onClick={() => cert.image && setSelectedCert(cert)}
-              className={`border-2 border-[var(--border-dark)] bg-[var(--bg-paper-card)] p-5 shadow-xs flex flex-col justify-between hover:shadow-md transition-all relative ${
-                cert.image ? 'cursor-pointer hover:border-[var(--accent-red)]' : ''
-              }`}
+              className="border-4 border-double border-[var(--border-dark)] bg-[var(--bg-paper-card)] p-6 shadow-md flex flex-col justify-between hover:shadow-lg transition-all relative cursor-pointer hover:border-[var(--accent-red)]"
             >
               <div>
-                <div className="flex items-center justify-between font-typewriter text-[10px] font-bold text-[var(--text-muted)] border-b border-[var(--border-light)] pb-2 mb-3">
-                  <span className="flex items-center gap-1 text-[var(--accent-red)]">
-                    {cert.isOngoing ? <Clock className="w-3.5 h-3.5 text-amber-600 animate-pulse" /> : <ShieldCheck className="w-3.5 h-3.5" />}
+                <div className="flex items-center justify-between font-typewriter text-xs font-bold text-[var(--text-muted)] border-b border-[var(--border-light)] pb-2 mb-3">
+                  <span className="flex items-center gap-1.5 text-[var(--accent-red)]">
+                    <ShieldCheck className="w-4 h-4" />
                     <span>{cert.credentialId}</span>
                   </span>
-                  <span className={cert.isOngoing ? 'text-amber-700 dark:text-amber-400 font-bold' : ''}>{cert.date}</span>
+                  <span>{cert.date}</span>
                 </div>
 
-                <h3 className="font-headline text-xl font-bold text-[var(--text-main)] mb-2 leading-snug">
+                <h3 className="font-headline text-2xl font-bold text-[var(--text-main)] mb-2 leading-snug">
                   {cert.title}
                 </h3>
 
-                <p className="font-serif italic text-xs text-[var(--text-muted)] mb-3">
+                <p className="font-serif italic text-xs sm:text-sm text-[var(--text-muted)] mb-3">
                   Issued by {cert.issuer}
                 </p>
 
@@ -100,26 +77,26 @@ export const CertificationsArchive: React.FC = () => {
                   {cert.description}
                 </p>
 
-                {/* Certificate Preview Image if Available */}
+                {/* Certificate Preview Image */}
                 {cert.image && (
-                  <div className="mb-4 border-2 border-[var(--border-dark)] overflow-hidden shadow-xs relative group">
+                  <div className="mb-4 border-2 border-[var(--border-dark)] overflow-hidden shadow-xs relative group rounded-xs">
                     <img
                       src={cert.image}
                       alt={cert.title}
-                      className="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-64 object-cover group-hover:scale-103 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-typewriter text-xs font-bold gap-1">
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-typewriter text-xs font-bold gap-1.5">
                       <ExternalLink className="w-4 h-4" />
-                      <span>Click to View Certificate</span>
+                      <span>Click to Enlarge Full Certificate</span>
                     </div>
                   </div>
                 )}
 
                 <div className="space-y-1.5 font-typewriter text-xs mb-4">
                   <div className="text-[10px] text-[var(--text-muted)] font-bold uppercase">VERIFIED COMPETENCIES:</div>
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-1.5">
                     {cert.skills.map((s) => (
-                      <span key={s} className="bg-[var(--bg-primary)] border border-[var(--border-dark)] px-2 py-0.5 text-[10px] font-bold">
+                      <span key={s} className="bg-[var(--bg-primary)] border border-[var(--border-dark)] px-2.5 py-1 text-xs font-bold">
                         {s}
                       </span>
                     ))}
@@ -129,17 +106,13 @@ export const CertificationsArchive: React.FC = () => {
 
               {/* Bottom Stamp Seal */}
               <div className="pt-3 border-t border-[var(--border-light)] flex items-center justify-between font-typewriter text-xs">
-                <span className={`stamp-seal text-[8px] py-0.5 px-2 ${cert.isOngoing ? 'border-amber-600 text-amber-700 bg-amber-50' : ''}`}>
+                <span className="stamp-seal text-[9px] py-0.5 px-2">
                   {cert.sealText}
                 </span>
-                {cert.image ? (
-                  <button className="flex items-center gap-1 font-bold text-[var(--text-main)] underline hover:text-[var(--accent-red)] text-[10px]">
-                    <FileCheck className="w-3 h-3" />
-                    <span>View Original Record</span>
-                  </button>
-                ) : (
-                  <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase">Active Student</span>
-                )}
+                <button className="flex items-center gap-1 font-bold text-[var(--text-main)] underline hover:text-[var(--accent-red)] text-xs">
+                  <FileCheck className="w-3.5 h-3.5" />
+                  <span>View Original Certificate</span>
+                </button>
               </div>
 
             </div>
