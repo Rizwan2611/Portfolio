@@ -28,7 +28,6 @@ export const MARKET_COMMODITIES = [
   { symbol: '$MONGODB', name: 'MongoDB Atlas', price: '7.0.5', change: '+16.8%', isUp: true },
   { symbol: '$PYTHON_DS', name: 'Python Analytics', price: '3.12', change: '+15.3%', isUp: true },
   { symbol: '$REST_API', name: 'Mongoose REST APIs', price: '100% Live', change: '+12.0%', isUp: true },
-  { symbol: '$COFFEE', name: 'Espresso Consumption', price: '4 Cups/Day', change: '-2.1%', isUp: false },
 ];
 
 export const LEAD_STORY: Article = {
