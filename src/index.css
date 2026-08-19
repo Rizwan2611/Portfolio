@@ -98,50 +98,48 @@ body {
 
 .text-clamp-section {
   font-size: clamp(2.25rem, 5vw, 5rem);
-  line-height: 1.05;
-}
-
-.text-clamp-article {
-  font-size: clamp(1.75rem, 3.5vw, 3rem);
-  line-height: 1.15;
-}
-
-.text-clamp-body {
-  font-size: clamp(1rem, 1.2vw, 1.1875rem);
-  line-height: 1.6;
-}
-
-.text-clamp-meta {
-  font-size: clamp(0.625rem, 0.9vw, 0.8125rem);
-  line-height: 1.4;
-}
-
-/* Hardware-Accelerated Layer */
-.gpu-layer {
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  line-height: 1;
 }
 
 /* Drop Cap Styling */
 .drop-cap::first-letter {
-  font-family: var(--font-ciguatera);
   float: left;
-  font-size: 4.5rem;
-  line-height: 0.75;
+  font-family: var(--font-ciguatera);
+  font-size: 4.25rem;
+  line-height: 0.8;
   padding-top: 4px;
-  padding-right: 10px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  margin-right: 4px;
   color: var(--text-main);
-  font-weight: bold;
+  font-weight: 900;
 }
 
-/* Authentic Broadsheet Rules */
-.border-double-thick {
-  border-style: double;
-  border-width: 6px;
-  border-color: var(--border-dark);
+/* Newspaper Crease Fold Effect */
+.newspaper-crease {
+  position: relative;
 }
 
-.border-double-medium {
+.newspaper-crease::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(120, 107, 90, 0.15) 15%,
+    rgba(120, 107, 90, 0.15) 85%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Broadsheet Border Patterns */
+.border-newspaper-double {
   border-style: double;
   border-width: 4px;
   border-color: var(--border-dark);
@@ -195,6 +193,45 @@ body {
   .columns-newspaper-2 {
     column-count: 1;
   }
+}
+
+/* 3D Real Newspaper Page Turn Animations */
+.perspective-broadsheet {
+  perspective: 2000px;
+}
+
+@keyframes pageTurnNext {
+  0% {
+    opacity: 0.3;
+    transform: rotateY(-18deg) scale(0.97);
+    transform-origin: left center;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+    transform-origin: left center;
+  }
+}
+
+@keyframes pageTurnPrev {
+  0% {
+    opacity: 0.3;
+    transform: rotateY(18deg) scale(0.97);
+    transform-origin: right center;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+    transform-origin: right center;
+  }
+}
+
+.animate-page-turn-next {
+  animation: pageTurnNext 0.45s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+.animate-page-turn-prev {
+  animation: pageTurnPrev 0.45s cubic-bezier(0.2, 1, 0.3, 1) forwards;
 }
 
 /* Scrollbar */
