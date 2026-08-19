@@ -73,7 +73,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none flex flex-col justify-between p-4 sm:p-8">
+    <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none flex flex-col justify-between p-4 sm:p-8 touch-none overscroll-none">
       
       {/* 1. Full-Page SVG Framed Cover Background with Vector Unfold Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">

@@ -44,6 +44,21 @@ export function App() {
     document.body.className = `theme-${currentTheme} font-serif antialiased selection:bg-[#DECBB3] selection:text-[#171615]`;
   }, [currentTheme]);
 
+  // Completely lock page scroll while intro/welcome curtain is active
+  useEffect(() => {
+    if (!hasUnfolded) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [hasUnfolded]);
+
   // Persist bookmarks
   useEffect(() => {
     try {
@@ -85,6 +100,8 @@ export function App() {
 
   // Keyboard Arrow Page-Turning Controls (Left/Right Arrow Keys)
   useEffect(() => {
+    if (!hasUnfolded) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isSearchOpen || isClippingsOpen || selectedArticle || ['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         return;
@@ -99,7 +116,7 @@ export function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSearchOpen, isClippingsOpen, selectedArticle, turnNextPage, turnPrevPage]);
+  }, [hasUnfolded, isSearchOpen, isClippingsOpen, selectedArticle, turnNextPage, turnPrevPage]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] transition-colors duration-400 newspaper-crease relative perspective-newspaper overflow-x-hidden">
