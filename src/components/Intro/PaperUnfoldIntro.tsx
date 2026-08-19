@@ -60,7 +60,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       } else {
         clearInterval(interval);
       }
-    }, 45); // Smooth 45ms typing pace
+    }, 45);
 
     return () => clearInterval(interval);
   }, [step]);
@@ -73,9 +73,9 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
+    <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none flex flex-col justify-between p-4 sm:p-8">
       
-      {/* 1. Full-Page SVG Framed Cover Photo with Vector Space Unfold Zoom */}
+      {/* 1. Full-Page SVG Framed Cover Background with Vector Unfold Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <svg
           viewBox="0 0 1024 1024"
@@ -115,14 +115,14 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       </div>
 
       {/* 2. Broadsheet Double Rule Frame Overlay */}
-      <div className={`absolute inset-4 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1000 ${
+      <div className={`absolute inset-3 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1000 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         <div className="w-full h-full border border-[#E9DFC9]/40 p-2"></div>
       </div>
 
-      {/* Skip Button Top Right */}
-      <div className="relative z-20 flex justify-end p-4 sm:p-6">
+      {/* Top Bar - Skip Button */}
+      <div className="relative z-20 w-full flex justify-end">
         <button
           onClick={handleSkip}
           className="flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase bg-black/70 border border-[#E9DFC9] text-[#E9DFC9] px-4 py-2 hover:bg-[#8A6A3D] hover:text-white transition-all shadow-md backdrop-blur-xs rounded-xs cursor-pointer"
@@ -132,39 +132,39 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         </button>
       </div>
 
-      {/* 3. Text Overlay Content (Positioned over scattered newspapers cover) */}
-      <div className={`relative z-20 max-w-4xl mx-auto text-center my-auto px-4 w-full transition-all duration-1000 ${
+      {/* Center Perfectly Aligned Text Overlay Content */}
+      <div className={`relative z-20 max-w-5xl mx-auto text-center my-auto px-4 w-full flex flex-col items-center justify-center transition-all duration-1000 ${
         step === 4 ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
       }`}>
         
-        {/* Metadata Reveal */}
-        <div className={`transition-all duration-600 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
-          <div className="flex items-center justify-center gap-2 text-xs font-typewriter tracking-widest text-amber-300 font-bold uppercase mb-3">
-            <span>{NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}</span>
+        {/* Metadata Tag */}
+        <div className={`transition-all duration-600 transform mb-2 ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
+          <div className="text-xs sm:text-sm font-typewriter tracking-widest text-amber-300 font-bold uppercase">
+            {NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}
           </div>
         </div>
 
-        {/* Masthead Title */}
-        <div className={`transition-all duration-600 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
-          <h1 className="font-ciguatera text-5xl sm:text-7xl md:text-8xl font-black uppercase text-[#E9DFC9] tracking-tight drop-shadow-lg my-3">
+        {/* Main Masthead Title */}
+        <div className={`transition-all duration-600 transform w-full ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+          <h1 className="font-ciguatera text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase text-[#E9DFC9] tracking-tight leading-none drop-shadow-2xl my-2">
             {NEWSPAPER_META.title}
           </h1>
-          <div className="w-full h-1 bg-[#E9DFC9]/80 my-4"></div>
+          <div className="w-48 sm:w-80 h-1 bg-[#E9DFC9]/80 mx-auto my-4 sm:my-6"></div>
         </div>
 
-        {/* Headline Typewriter Reveal (Strictly Once) */}
-        <div className="min-h-16 my-3 flex items-center justify-center">
+        {/* Headline Typewriter Reveal */}
+        <div className="min-h-16 my-2 flex items-center justify-center">
           {step >= 2 && (
-            <h2 className="font-ciguatera text-3xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tight drop-shadow-xl">
+            <h2 className="font-ciguatera text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-wider drop-shadow-xl">
               {headlineText}
               <span className="animate-pulse text-amber-400">|</span>
             </h2>
           )}
         </div>
 
-        {/* Subtitle Reveal */}
+        {/* Subtitle Quote */}
         <div className={`transition-all duration-600 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <p className="font-serif italic text-base sm:text-xl text-amber-100/90 max-w-2xl mx-auto drop-shadow-md mb-4">
+          <p className="font-serif italic text-base sm:text-xl md:text-2xl text-amber-100/90 max-w-3xl mx-auto drop-shadow-md leading-relaxed my-2">
             "A Computer Science student exploring software, data, artificial intelligence and creative technology."
           </p>
         </div>
@@ -172,7 +172,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       </div>
 
       {/* Footer Dateline Bar */}
-      <div className={`relative z-20 text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-6 uppercase tracking-widest font-semibold transition-opacity duration-1000 ${
+      <div className={`relative z-20 w-full text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-2 uppercase tracking-widest font-semibold transition-opacity duration-1000 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         {NEWSPAPER_META.dateline} • EST. {NEWSPAPER_META.established}
