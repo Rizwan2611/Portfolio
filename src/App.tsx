@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import type { ThemeMode, Article } from './types';
 import { PaperUnfoldIntro } from './components/Intro/PaperUnfoldIntro';
 import { Masthead } from './components/Header/Masthead';
-import { BreakingTicker } from './components/Header/BreakingTicker';
 import { MarketTicker } from './components/Header/MarketTicker';
 import { SectionNav, type SectionId } from './components/Navigation/SectionNav';
 import { HeroFrontPage } from './components/Sections/HeroFrontPage';
@@ -105,9 +104,6 @@ export function App() {
       {!hasUnfolded && (
         <PaperUnfoldIntro onUnfold={() => setHasUnfolded(true)} />
       )}
-
-      {/* Breaking News Marquee */}
-      <BreakingTicker onSelectHeadline={() => setIsSearchOpen(true)} />
 
       {/* Main Newspaper Masthead */}
       <Masthead
