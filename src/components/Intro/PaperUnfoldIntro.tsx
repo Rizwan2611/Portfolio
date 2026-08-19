@@ -9,8 +9,40 @@ interface PaperUnfoldIntroProps {
 export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) => {
   const [step, setStep] = useState(0); // 0: Photo background, 1: Masthead, 2: Headline typewriter, 3: Subtitle, 4: Auto-Zoom Eye
   const [headlineText, setHeadlineText] = useState('');
+  const [eyeOrigin, setEyeOrigin] = useState('52.64% 31.08%');
   const hasTypedRef = useRef(false);
   const fullHeadline = 'THE DIGITAL BUILDER';
+
+  // Dynamically calculate exact pupil transform origin relative to rendered viewport bounds
+  useEffect(() => {
+    const updatePupilOrigin = () => {
+      if (typeof window === 'undefined') return;
+      const w_screen = window.innerWidth;
+      const h_screen = window.innerHeight;
+      const w_img = 1024;
+      const h_img = 682;
+      
+      // Exact Subject Left Eye Pupil Coordinates in 1024x682 source photo (x: 539, y: 232)
+      const eye_x = 539; 
+      const eye_y = 232;
+
+      const scale = Math.max(w_screen / w_img, h_screen / h_img);
+      const rendered_w = w_img * scale;
+      const rendered_h = h_img * scale;
+      
+      const crop_x = (rendered_w - w_screen) / 2;
+      const crop_y = (rendered_h - h_screen) / 2;
+      
+      const originX = ((eye_x * scale - crop_x) / w_screen) * 100;
+      const originY = ((eye_y * scale - crop_y) / h_screen) * 100;
+      
+      setEyeOrigin(`${originX.toFixed(2)}% ${originY.toFixed(2)}%`);
+    };
+
+    updatePupilOrigin();
+    window.addEventListener('resize', updatePupilOrigin);
+    return () => window.removeEventListener('resize', updatePupilOrigin);
+  }, []);
 
   useEffect(() => {
     // 1. Masthead & Metadata appear slowly (800ms)
@@ -75,16 +107,16 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with Cinematic Left-Eye Pupil Zoom */}
+      {/* 1. Full-Page Photo Cover Background with Mathematical Left-Eye Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src="/rizwan_photo.png"
           alt="Rizwan Salmani Full Page Portrait"
           className={`w-full h-full object-cover transition-all duration-[2200ms] ease-in-out ${
-            step === 4 ? 'scale-[30] opacity-0' : 'scale-100 opacity-85'
+            step === 4 ? 'scale-[32] opacity-0' : 'scale-100 opacity-85'
           }`}
           style={{
-            transformOrigin: '44.5% 33.8%', // Exact Left Eye Pupil Center (x: 44.5%, y: 33.8%)
+            transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center
             transitionTimingFunction: step === 4 ? 'cubic-bezier(0.65, 0, 0.35, 1)' : 'ease-out',
           }}
         />
