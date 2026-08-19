@@ -13,30 +13,30 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   const fullHeadline = 'THE DIGITAL BUILDER';
 
   useEffect(() => {
-    // 1. Masthead & Metadata appear slowly (1000ms)
+    // 1. Masthead & Metadata appear (400ms)
     const t1 = setTimeout(() => {
       setStep(1);
-    }, 1000);
+    }, 400);
 
-    // 2. Deliberate Typewriter headline reveals (2500ms)
+    // 2. Typewriter headline reveals (1000ms)
     const t2 = setTimeout(() => {
       setStep(2);
-    }, 2500);
+    }, 1000);
 
-    // 3. Subtitle appears gracefully (5500ms)
+    // 3. Subtitle appears (2800ms)
     const t3 = setTimeout(() => {
       setStep(3);
-    }, 5500);
+    }, 2800);
 
-    // 4. Automatic ultra-slow cinematic zoom into broadsheet headline (8500ms)
+    // 4. Fast crisp zoom into broadsheet headline (4200ms)
     const t4 = setTimeout(() => {
       setStep(4);
-    }, 8500);
+    }, 4200);
 
-    // 5. Complete zoom & transition into main portfolio (12800ms)
+    // 5. Complete zoom & transition into main portfolio (6800ms)
     const t5 = setTimeout(() => {
       onUnfold();
-    }, 12800);
+    }, 6800);
 
     return () => {
       clearTimeout(t1);
@@ -47,7 +47,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
     };
   }, [onUnfold]);
 
-  // Strict Single-Execution Typewriter headline reveal (Runs ONLY ONCE)
+  // Fast & Snappy Typewriter headline reveal (Runs ONLY ONCE)
   useEffect(() => {
     if (step < 2 || hasTypedRef.current) return;
     hasTypedRef.current = true;
@@ -60,7 +60,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       } else {
         clearInterval(interval);
       }
-    }, 110); // Deliberate smooth typing rhythm
+    }, 55); // Fast, snappy 55ms typing pace
 
     return () => clearInterval(interval);
   }, [step]);
@@ -69,13 +69,13 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
     setStep(4);
     setTimeout(() => {
       onUnfold();
-    }, 600);
+    }, 400);
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page SVG Framed Cover Photo with 1:1 Vector Space Pupil Zoom */}
+      {/* 1. Full-Page SVG Framed Cover Photo with Fast Vector Space Unfold Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <svg
           viewBox="0 0 1024 1024"
@@ -83,7 +83,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
           className="w-full h-full pointer-events-none"
         >
           <g
-            className={`transition-all duration-[3800ms] ${
+            className={`transition-all duration-[2200ms] ${
               step === 4 ? 'opacity-0' : 'opacity-85'
             }`}
             style={{
@@ -92,7 +92,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
                 ? 'scale(8)'
                 : 'scale(1)',
               willChange: 'transform, opacity',
-              transitionTimingFunction: step === 4 ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
+              transitionTimingFunction: step === 4 ? 'cubic-bezier(0.22, 1, 0.36, 1)' : 'ease-out',
             }}
           >
             <image
@@ -106,23 +106,23 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         </svg>
 
         {/* Editorial Sepia & Vignette Overlays */}
-        <div className={`absolute inset-0 bg-[#E9DFC9]/30 mix-blend-multiply transition-opacity duration-1500 pointer-events-none ${
+        <div className={`absolute inset-0 bg-[#E9DFC9]/30 mix-blend-multiply transition-opacity duration-1000 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/85 transition-opacity duration-1500 pointer-events-none ${
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/85 transition-opacity duration-1000 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
       </div>
 
       {/* 2. Broadsheet Double Rule Frame Overlay */}
-      <div className={`absolute inset-4 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1500 ${
+      <div className={`absolute inset-4 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1000 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         <div className="w-full h-full border border-[#E9DFC9]/40 p-2"></div>
       </div>
 
       {/* Skip Button Top Right */}
-      <div className="relative z-20 flex justify-end p-6">
+      <div className="relative z-20 flex justify-end p-4 sm:p-6">
         <button
           onClick={handleSkip}
           className="flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase bg-black/70 border border-[#E9DFC9] text-[#E9DFC9] px-4 py-2 hover:bg-[#8A6A3D] hover:text-white transition-all shadow-md backdrop-blur-xs rounded-xs cursor-pointer"
@@ -133,19 +133,19 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       </div>
 
       {/* 3. Text Overlay Content (Positioned over scattered newspapers cover) */}
-      <div className={`relative z-20 max-w-4xl mx-auto text-center my-auto px-4 w-full transition-all duration-1500 ${
+      <div className={`relative z-20 max-w-4xl mx-auto text-center my-auto px-4 w-full transition-all duration-1000 ${
         step === 4 ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
       }`}>
         
         {/* Metadata Reveal */}
-        <div className={`transition-all duration-1200 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
+        <div className={`transition-all duration-800 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
           <div className="flex items-center justify-center gap-2 text-xs font-typewriter tracking-widest text-amber-300 font-bold uppercase mb-3">
             <span>{NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}</span>
           </div>
         </div>
 
         {/* Masthead Title */}
-        <div className={`transition-all duration-1200 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+        <div className={`transition-all duration-800 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
           <h1 className="font-ciguatera text-5xl sm:text-7xl md:text-8xl font-black uppercase text-[#E9DFC9] tracking-tight drop-shadow-lg my-3">
             {NEWSPAPER_META.title}
           </h1>
@@ -163,7 +163,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         </div>
 
         {/* Subtitle Reveal */}
-        <div className={`transition-all duration-1200 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className={`transition-all duration-800 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <p className="font-serif italic text-base sm:text-xl text-amber-100/90 max-w-2xl mx-auto drop-shadow-md mb-4">
             "A Computer Science student exploring software, data, artificial intelligence and creative technology."
           </p>
@@ -172,7 +172,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       </div>
 
       {/* Footer Dateline Bar */}
-      <div className={`relative z-20 text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-6 uppercase tracking-widest font-semibold transition-opacity duration-1500 ${
+      <div className={`relative z-20 text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-6 uppercase tracking-widest font-semibold transition-opacity duration-1000 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         {NEWSPAPER_META.dateline} • EST. {NEWSPAPER_META.established}

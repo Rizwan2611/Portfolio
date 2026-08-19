@@ -31,12 +31,12 @@ export const HeroFrontPage: React.FC<HeroFrontPageProps> = ({
           {/* Main Lead Story (Col 1-8) */}
           <div className="lg:col-span-8 border-b lg:border-b-0 lg:border-r border-[var(--border-light)] lg:pr-8 pb-6 lg:pb-0">
             
-            {/* Category & Date Tagline */}
-            <div className="flex items-center justify-between font-typewriter text-xs uppercase tracking-widest text-[var(--accent-red)] font-bold mb-2">
-              <span className="flex items-center gap-1.5 bg-[var(--accent-red)] text-white px-2 py-0.5 rounded-xs">
+            {/* Category & Date Tagline (Mobile Responsive Wrap) */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between font-typewriter text-xs uppercase tracking-widest text-[var(--accent-red)] font-bold mb-2 gap-2">
+              <span className="inline-flex items-center gap-1.5 bg-[var(--accent-red)] text-white px-2 py-0.5 rounded-xs w-fit">
                 <span>SPECIAL FRONT PAGE COVERAGE</span>
               </span>
-              <span>{LEAD_STORY.date}</span>
+              <span className="text-[11px] sm:text-xs text-[var(--text-muted)]">{LEAD_STORY.date}</span>
             </div>
 
             {/* Headline */}
