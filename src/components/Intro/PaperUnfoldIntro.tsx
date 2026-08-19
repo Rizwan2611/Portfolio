@@ -54,30 +54,30 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   }, []);
 
   useEffect(() => {
-    // 1. Masthead & Metadata appear slowly (800ms)
+    // 1. Masthead & Metadata appear slowly (1000ms)
     const t1 = setTimeout(() => {
       setStep(1);
-    }, 800);
+    }, 1000);
 
-    // 2. Deliberate Typewriter headline reveals (2000ms)
+    // 2. Deliberate Typewriter headline reveals (2500ms)
     const t2 = setTimeout(() => {
       setStep(2);
-    }, 2000);
+    }, 2500);
 
-    // 3. Subtitle appears gracefully (4500ms)
+    // 3. Subtitle appears gracefully (5500ms)
     const t3 = setTimeout(() => {
       setStep(3);
-    }, 4500);
+    }, 5500);
 
-    // 4. Automatic ultra-smooth zoom straight into viewport-centered left eye pupil (6500ms)
+    // 4. Automatic ultra-slow cinematic zoom straight into left eye pupil (8500ms)
     const t4 = setTimeout(() => {
       setStep(4);
-    }, 6500);
+    }, 8500);
 
-    // 5. Complete zoom & transition into main portfolio (8700ms)
+    // 5. Complete zoom & transition into main portfolio (13200ms)
     const t5 = setTimeout(() => {
       onUnfold();
-    }, 8700);
+    }, 13200);
 
     return () => {
       clearTimeout(t1);
@@ -101,7 +101,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       } else {
         clearInterval(interval);
       }
-    }, 90);
+    }, 110); // Deliberate smooth typing rhythm
 
     return () => clearInterval(interval);
   }, [step]);
@@ -110,38 +110,38 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
     setStep(4);
     setTimeout(() => {
       onUnfold();
-    }, 500);
+    }, 800);
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with Viewport-Centering Left-Eye Pupil Zoom */}
+      {/* 1. Full-Page Photo Cover Background with Cinematic Slow Left-Eye Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src="/rizwan_photo.png"
           alt="Rizwan Salmani Full Page Portrait"
-          className={`w-full h-full object-cover transition-all duration-[2400ms] ${
+          className={`w-full h-full object-cover transition-all duration-[4500ms] ${
             step === 4 ? 'opacity-0' : 'opacity-85'
           }`}
           style={{
             transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center
             transform: step === 4 ? `translate(${eyeTranslation}) scale(30)` : 'translate(0px, 0px) scale(1)',
             willChange: 'transform, opacity', // GPU Composition Acceleration
-            transitionTimingFunction: step === 4 ? 'cubic-bezier(0.22, 1, 0.36, 1)' : 'ease-out',
+            transitionTimingFunction: step === 4 ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
           }}
         />
         {/* Editorial Sepia & Vignette Overlays */}
-        <div className={`absolute inset-0 bg-[#E9DFC9]/35 mix-blend-multiply transition-opacity duration-1000 ${
+        <div className={`absolute inset-0 bg-[#E9DFC9]/35 mix-blend-multiply transition-opacity duration-1500 ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/80 transition-opacity duration-1000 ${
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/80 transition-opacity duration-1500 ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
       </div>
 
       {/* 2. Broadsheet Double Rule Frame Overlay */}
-      <div className={`absolute inset-4 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1000 ${
+      <div className={`absolute inset-4 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1500 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         <div className="w-full h-full border border-[#E9DFC9]/40 p-2"></div>
@@ -159,12 +159,12 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       </div>
 
       {/* 3. Text Overlay Content (Positioned over full-page photo) */}
-      <div className={`relative z-20 max-w-4xl mx-auto text-center my-auto px-4 w-full transition-all duration-1000 ${
+      <div className={`relative z-20 max-w-4xl mx-auto text-center my-auto px-4 w-full transition-all duration-1500 ${
         step === 4 ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
       }`}>
         
         {/* Metadata Reveal */}
-        <div className={`transition-all duration-1000 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
+        <div className={`transition-all duration-1200 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
           <div className="flex items-center justify-center gap-2 text-xs font-typewriter tracking-widest text-amber-300 font-bold uppercase mb-3">
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span>{NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}</span>
@@ -172,7 +172,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         </div>
 
         {/* Masthead Title */}
-        <div className={`transition-all duration-1000 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+        <div className={`transition-all duration-1200 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
           <h1 className="font-ciguatera text-5xl sm:text-7xl md:text-8xl font-black uppercase text-[#E9DFC9] tracking-tight drop-shadow-lg my-3">
             {NEWSPAPER_META.title}
           </h1>
@@ -190,7 +190,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         </div>
 
         {/* Subtitle Reveal */}
-        <div className={`transition-all duration-1000 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className={`transition-all duration-1200 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <p className="font-serif italic text-base sm:text-xl text-amber-100/90 max-w-2xl mx-auto drop-shadow-md mb-4">
             "A Computer Science student exploring software, data, artificial intelligence and creative technology."
           </p>
@@ -199,7 +199,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       </div>
 
       {/* Footer Dateline Bar */}
-      <div className={`relative z-20 text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-6 uppercase tracking-widest font-semibold transition-opacity duration-1000 ${
+      <div className={`relative z-20 text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-6 uppercase tracking-widest font-semibold transition-opacity duration-1500 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         {NEWSPAPER_META.dateline} • EST. {NEWSPAPER_META.established}
