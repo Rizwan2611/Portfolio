@@ -195,54 +195,56 @@ body {
   }
 }
 
-/* 3D Newspaper Page Flip Animations (Left-to-Right & Right-to-Left) */
+/* Ultra-Smooth Realistic 3D Newspaper Page Turn Animations */
 .perspective-newspaper {
-  perspective: 2500px;
+  perspective: 2800px;
   perspective-origin: 50% 50%;
 }
 
-@keyframes flipForward {
+@keyframes flipForwardSmooth {
   0% {
-    opacity: 0.2;
-    transform: rotateY(85deg) scale(0.94);
+    opacity: 0.1;
+    transform: rotateY(88deg) translateZ(50px) scale(0.92);
     transform-origin: right center;
-    box-shadow: -25px 0 60px rgba(0, 0, 0, 0.5);
+    box-shadow: -40px 20px 80px rgba(0, 0, 0, 0.6);
   }
-  60% {
+  45% {
     opacity: 0.85;
+    transform: rotateY(30deg) translateZ(25px) scale(0.98);
   }
   100% {
     opacity: 1;
-    transform: rotateY(0deg) scale(1);
+    transform: rotateY(0deg) translateZ(0px) scale(1);
     transform-origin: right center;
     box-shadow: 0 15px 40px rgba(23, 22, 21, 0.2);
   }
 }
 
-@keyframes flipBackward {
+@keyframes flipBackwardSmooth {
   0% {
-    opacity: 0.2;
-    transform: rotateY(-85deg) scale(0.94);
+    opacity: 0.1;
+    transform: rotateY(-88deg) translateZ(50px) scale(0.92);
     transform-origin: left center;
-    box-shadow: 25px 0 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 40px 20px 80px rgba(0, 0, 0, 0.6);
   }
-  60% {
+  45% {
     opacity: 0.85;
+    transform: rotateY(-30deg) translateZ(25px) scale(0.98);
   }
   100% {
     opacity: 1;
-    transform: rotateY(0deg) scale(1);
+    transform: rotateY(0deg) translateZ(0px) scale(1);
     transform-origin: left center;
     box-shadow: 0 15px 40px rgba(23, 22, 21, 0.2);
   }
 }
 
 .animate-flip-forward {
-  animation: flipForward 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: flipForwardSmooth 0.75s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 .animate-flip-backward {
-  animation: flipBackward 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: flipBackwardSmooth 0.75s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 /* Scrollbar */
