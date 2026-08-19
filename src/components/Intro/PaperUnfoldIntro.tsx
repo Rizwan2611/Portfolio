@@ -9,11 +9,12 @@ interface PaperUnfoldIntroProps {
 export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) => {
   const [step, setStep] = useState(0); // 0: Photo background, 1: Masthead, 2: Headline typewriter, 3: Subtitle, 4: Auto-Zoom Eye
   const [headlineText, setHeadlineText] = useState('');
-  const [eyeOrigin, setEyeOrigin] = useState('52.64% 31.08%');
+  const [eyeOrigin, setEyeOrigin] = useState('44.82% 31.25%');
+  const [eyeTranslation, setEyeTranslation] = useState('0px, 0px');
   const hasTypedRef = useRef(false);
   const fullHeadline = 'THE DIGITAL BUILDER';
 
-  // Dynamically calculate exact pupil transform origin relative to rendered viewport bounds
+  // Dynamically calculate exact pupil transform origin AND viewport centering translation
   useEffect(() => {
     const updatePupilOrigin = () => {
       if (typeof window === 'undefined') return;
@@ -22,9 +23,9 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       const w_img = 1024;
       const h_img = 682;
       
-      // Exact Subject Left Eye Pupil Coordinates in 1024x682 source photo (x: 539, y: 232)
-      const eye_x = 539; 
-      const eye_y = 232;
+      // Screen Left Eye Pupil Coordinates in 1024x682 source photo (x: 459, y: 233)
+      const eye_x = 459; 
+      const eye_y = 233;
 
       const scale = Math.max(w_screen / w_img, h_screen / h_img);
       const rendered_w = w_img * scale;
@@ -33,10 +34,18 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       const crop_x = (rendered_w - w_screen) / 2;
       const crop_y = (rendered_h - h_screen) / 2;
       
-      const originX = ((eye_x * scale - crop_x) / w_screen) * 100;
-      const originY = ((eye_y * scale - crop_y) / h_screen) * 100;
+      const eye_screen_x = (eye_x * scale) - crop_x;
+      const eye_screen_y = (eye_y * scale) - crop_y;
+
+      // Delta offset required to pull eye pupil to exact (50%, 50%) center of viewport
+      const dx = (w_screen / 2) - eye_screen_x;
+      const dy = (h_screen / 2) - eye_screen_y;
+      
+      const originX = (eye_screen_x / w_screen) * 100;
+      const originY = (eye_screen_y / h_screen) * 100;
       
       setEyeOrigin(`${originX.toFixed(2)}% ${originY.toFixed(2)}%`);
+      setEyeTranslation(`${dx.toFixed(1)}px, ${dy.toFixed(1)}px`);
     };
 
     updatePupilOrigin();
@@ -60,7 +69,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 4500);
 
-    // 4. Automatic ultra-smooth zoom straight into left eye pupil (6500ms)
+    // 4. Automatic ultra-smooth zoom straight into viewport-centered left eye pupil (6500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 6500);
@@ -107,16 +116,17 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with GPU-Accelerated Left-Eye Pupil Zoom */}
+      {/* 1. Full-Page Photo Cover Background with Viewport-Centering Left-Eye Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src="/rizwan_photo.png"
           alt="Rizwan Salmani Full Page Portrait"
           className={`w-full h-full object-cover transition-all duration-[2400ms] ${
-            step === 4 ? 'scale-[28] opacity-0' : 'scale-100 opacity-85'
+            step === 4 ? 'opacity-0' : 'opacity-85'
           }`}
           style={{
             transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center
+            transform: step === 4 ? `translate(${eyeTranslation}) scale(30)` : 'translate(0px, 0px) scale(1)',
             willChange: 'transform, opacity', // GPU Composition Acceleration
             transitionTimingFunction: step === 4 ? 'cubic-bezier(0.22, 1, 0.36, 1)' : 'ease-out',
           }}
