@@ -39,18 +39,19 @@ export function App() {
   const sectionOrder: SectionId[] = ['frontpage', 'projects', 'skills', 'certifications', 'contact'];
   const currentPageIdx = sectionOrder.indexOf(activeSection);
 
-  // Sync theme changes to body element class & lock body scrolling during intro overlay
+  // Disable scroll while intro is playing
   useEffect(() => {
-    document.body.className = `theme-${currentTheme} font-serif antialiased selection:bg-[#DECBB3] selection:text-[#171615]`;
     if (!hasUnfolded) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [currentTheme, hasUnfolded]);
+  }, [hasUnfolded]);
+
+  // Sync theme changes to body element class
+  useEffect(() => {
+    document.body.className = `theme-${currentTheme} font-serif antialiased selection:bg-[#DECBB3] selection:text-[#171615]`;
+  }, [currentTheme]);
 
   // Persist bookmarks
   useEffect(() => {
@@ -109,16 +110,16 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [hasUnfolded, isSearchOpen, isClippingsOpen, selectedArticle, turnNextPage, turnPrevPage]);
 
+  // If intro has not completed/unfolded, render ONLY the fixed intro screen with 0 scroll
+  if (!hasUnfolded) {
+    return <PaperUnfoldIntro onUnfold={() => setHasUnfolded(true)} />;
+  }
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] transition-colors duration-400 newspaper-crease relative perspective-newspaper overflow-x-hidden">
       
       {/* Desktop-only subtle ink cursor */}
       <CustomInkCursor />
-
-      {/* Hero Opening Cover Curtain */}
-      {!hasUnfolded && (
-        <PaperUnfoldIntro onUnfold={() => setHasUnfolded(true)} />
-      )}
 
       {/* Main Newspaper Masthead */}
       <Masthead
