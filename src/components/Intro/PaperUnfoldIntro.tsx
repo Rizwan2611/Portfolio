@@ -7,20 +7,10 @@ interface PaperUnfoldIntroProps {
 }
 
 export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) => {
-  const [step, setStep] = useState(0); // 0: Photo background, 1: Masthead, 2: Headline typewriter, 3: Subtitle, 4: Auto-Zoom Eye
+  const [step, setStep] = useState(0); // 0: Background, 1: Masthead, 2: Headline typewriter, 3: Subtitle, 4: Auto-Zoom Unfold
   const [headlineText, setHeadlineText] = useState('');
   const hasTypedRef = useRef(false);
   const fullHeadline = 'THE DIGITAL BUILDER';
-
-  // SVG 1024x682 Fixed Canvas Space:
-  // Exact Target Coordinates extracted from user's close-up crop: x = 628, y = 185
-  const eyeX = 628;
-  const eyeY = 185;
-  const zoomScale = 30;
-
-  // Exact mathematical translation to pull target eye to SVG viewport center (512, 341)
-  const targetTx = 512 - eyeX * zoomScale;
-  const targetTy = 341 - eyeY * zoomScale;
 
   useEffect(() => {
     // 1. Masthead & Metadata appear slowly (1000ms)
@@ -38,15 +28,15 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 5500);
 
-    // 4. Automatic ultra-slow cinematic zoom straight into user's exact target eye pupil (8500ms)
+    // 4. Automatic ultra-slow cinematic zoom into broadsheet headline (8500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 8500);
 
-    // 5. Complete zoom & transition into main portfolio (13200ms)
+    // 5. Complete zoom & transition into main portfolio (12800ms)
     const t5 = setTimeout(() => {
       onUnfold();
-    }, 13200);
+    }, 12800);
 
     return () => {
       clearTimeout(t1);
@@ -79,46 +69,47 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
     setStep(4);
     setTimeout(() => {
       onUnfold();
-    }, 800);
+    }, 600);
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page SVG Framed Cover Photo with 1:1 Vector Space Pupil Zoom */}
+      {/* 1. Full-Page Scattered Broadsheet Newspapers Cover Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <svg
-          viewBox="0 0 1024 682"
+          viewBox="0 0 1024 1024"
           preserveAspectRatio="xMidYMid slice"
           className="w-full h-full pointer-events-none"
         >
           <g
-            className={`transition-all duration-[4500ms] ${
+            className={`transition-all duration-[3800ms] ${
               step === 4 ? 'opacity-0' : 'opacity-85'
             }`}
             style={{
+              transformOrigin: '512px 512px',
               transform: step === 4 
-                ? `translate(${targetTx}px, ${targetTy}px) scale(${zoomScale})`
-                : 'translate(0px, 0px) scale(1)',
+                ? 'scale(8)'
+                : 'scale(1)',
               willChange: 'transform, opacity',
               transitionTimingFunction: step === 4 ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
             }}
           >
             <image
-              href="/rizwan_photo.png"
+              href="/scattered_newspapers.png"
               x="0"
               y="0"
               width="1024"
-              height="682"
+              height="1024"
             />
           </g>
         </svg>
 
         {/* Editorial Sepia & Vignette Overlays */}
-        <div className={`absolute inset-0 bg-[#E9DFC9]/35 mix-blend-multiply transition-opacity duration-1500 pointer-events-none ${
+        <div className={`absolute inset-0 bg-[#E9DFC9]/30 mix-blend-multiply transition-opacity duration-1500 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/80 transition-opacity duration-1500 pointer-events-none ${
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/85 transition-opacity duration-1500 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
       </div>
@@ -141,7 +132,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         </button>
       </div>
 
-      {/* 3. Text Overlay Content (Positioned over full-page photo) */}
+      {/* 3. Text Overlay Content (Positioned over scattered newspapers cover) */}
       <div className={`relative z-20 max-w-4xl mx-auto text-center my-auto px-4 w-full transition-all duration-1500 ${
         step === 4 ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
       }`}>
