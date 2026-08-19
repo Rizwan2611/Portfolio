@@ -28,7 +28,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 4500);
 
-    // 4. Automatic smooth zoom straight into left eye (6500ms)
+    // 4. Automatic smooth zoom straight into left eye pupil (6500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 6500);
@@ -75,16 +75,16 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with Cinematic Left-Eye Zoom */}
+      {/* 1. Full-Page Photo Cover Background with Cinematic Left-Eye Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src="/rizwan_photo.png"
           alt="Rizwan Salmani Full Page Portrait"
-          className={`w-full h-full object-cover object-top transition-all duration-[2200ms] ease-in-out ${
-            step === 4 ? 'scale-[35] opacity-0' : 'scale-100 opacity-85'
+          className={`w-full h-full object-cover transition-all duration-[2200ms] ease-in-out ${
+            step === 4 ? 'scale-[30] opacity-0' : 'scale-100 opacity-85'
           }`}
           style={{
-            transformOrigin: '48.5% 42.5%', // Precise Left Eye Pupil Origin
+            transformOrigin: '44.5% 33.8%', // Exact Left Eye Pupil Center (x: 44.5%, y: 33.8%)
             transitionTimingFunction: step === 4 ? 'cubic-bezier(0.65, 0, 0.35, 1)' : 'ease-out',
           }}
         />
