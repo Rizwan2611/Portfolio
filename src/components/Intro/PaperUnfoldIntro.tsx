@@ -9,49 +9,19 @@ interface PaperUnfoldIntroProps {
 export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) => {
   const [step, setStep] = useState(0); // 0: Photo background, 1: Masthead, 2: Headline typewriter, 3: Subtitle, 4: Auto-Zoom Eye
   const [headlineText, setHeadlineText] = useState('');
-  const [eyeOrigin, setEyeOrigin] = useState('52.64% 31.08%');
-  const [eyeTranslation, setEyeTranslation] = useState('0px, 0px');
   const hasTypedRef = useRef(false);
   const fullHeadline = 'THE DIGITAL BUILDER';
 
-  // Dynamically calculate exact pupil transform origin AND viewport centering translation for Rizwan's Left Eye
-  useEffect(() => {
-    const updatePupilOrigin = () => {
-      if (typeof window === 'undefined') return;
-      const w_screen = window.innerWidth;
-      const h_screen = window.innerHeight;
-      const w_img = 1024;
-      const h_img = 682;
-      
-      // Exact Pupil Coordinates of Rizwan's Left Eye in 1024x682 source photo (x: 539, y: 232)
-      const eye_x = 539; 
-      const eye_y = 232;
+  // SVG 1024x682 Fixed Canvas Space:
+  // Target Eye Pupil (Screen Left Eye): x = 459, y = 233
+  // Target Eye Pupil (Subject Left Eye): x = 539, y = 232
+  const eyeX = 459;
+  const eyeY = 233;
+  const zoomScale = 28;
 
-      const scale = Math.max(w_screen / w_img, h_screen / h_img);
-      const rendered_w = w_img * scale;
-      const rendered_h = h_img * scale;
-      
-      const crop_x = (rendered_w - w_screen) / 2;
-      const crop_y = (rendered_h - h_screen) / 2;
-      
-      const eye_screen_x = (eye_x * scale) - crop_x;
-      const eye_screen_y = (eye_y * scale) - crop_y;
-
-      // Delta offset required to pull Rizwan's Left Eye pupil to exact (50%, 50%) center of viewport
-      const dx = (w_screen / 2) - eye_screen_x;
-      const dy = (h_screen / 2) - eye_screen_y;
-      
-      const originX = (eye_screen_x / w_screen) * 100;
-      const originY = (eye_screen_y / h_screen) * 100;
-      
-      setEyeOrigin(`${originX.toFixed(2)}% ${originY.toFixed(2)}%`);
-      setEyeTranslation(`${dx.toFixed(1)}px, ${dy.toFixed(1)}px`);
-    };
-
-    updatePupilOrigin();
-    window.addEventListener('resize', updatePupilOrigin);
-    return () => window.removeEventListener('resize', updatePupilOrigin);
-  }, []);
+  // Exact mathematical translation to pull target eye to SVG viewport center (512, 341)
+  const targetTx = 512 - eyeX * zoomScale;
+  const targetTy = 341 - eyeY * zoomScale;
 
   useEffect(() => {
     // 1. Masthead & Metadata appear slowly (1000ms)
@@ -69,7 +39,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 5500);
 
-    // 4. Automatic ultra-slow cinematic zoom straight into Rizwan's left eye pupil (8500ms)
+    // 4. Automatic ultra-slow cinematic zoom straight into left eye pupil (8500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 8500);
@@ -116,26 +86,40 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with Viewport-Centering Left-Eye Pupil Zoom */}
+      {/* 1. Full-Page SVG Framed Cover Photo with 1:1 Vector Space Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <img
-          src="/rizwan_photo.png"
-          alt="Rizwan Salmani Full Page Portrait"
-          className={`w-full h-full object-cover transition-all duration-[4500ms] ${
-            step === 4 ? 'opacity-0' : 'opacity-85'
-          }`}
-          style={{
-            transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center of Rizwan's Left Eye
-            transform: step === 4 ? `translate(${eyeTranslation}) scale(30)` : 'translate(0px, 0px) scale(1)',
-            willChange: 'transform, opacity', // GPU Composition Acceleration
-            transitionTimingFunction: step === 4 ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
-          }}
-        />
+        <svg
+          viewBox="0 0 1024 682"
+          preserveAspectRatio="xMidYMid slice"
+          className="w-full h-full pointer-events-none"
+        >
+          <g
+            className={`transition-all duration-[4500ms] ${
+              step === 4 ? 'opacity-0' : 'opacity-85'
+            }`}
+            style={{
+              transform: step === 4 
+                ? `translate(${targetTx}px, ${targetTy}px) scale(${zoomScale})`
+                : 'translate(0px, 0px) scale(1)',
+              willChange: 'transform, opacity',
+              transitionTimingFunction: step === 4 ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
+            }}
+          >
+            <image
+              href="/rizwan_photo.png"
+              x="0"
+              y="0"
+              width="1024"
+              height="682"
+            />
+          </g>
+        </svg>
+
         {/* Editorial Sepia & Vignette Overlays */}
-        <div className={`absolute inset-0 bg-[#E9DFC9]/35 mix-blend-multiply transition-opacity duration-1500 ${
+        <div className={`absolute inset-0 bg-[#E9DFC9]/35 mix-blend-multiply transition-opacity duration-1500 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/80 transition-opacity duration-1500 ${
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/80 transition-opacity duration-1500 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
       </div>
@@ -151,7 +135,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       <div className="relative z-20 flex justify-end p-6">
         <button
           onClick={handleSkip}
-          className="flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase bg-black/70 border border-[#E9DFC9] text-[#E9DFC9] px-4 py-2 hover:bg-[#8A6A3D] hover:text-white transition-all shadow-md backdrop-blur-xs rounded-xs"
+          className="flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase bg-black/70 border border-[#E9DFC9] text-[#E9DFC9] px-4 py-2 hover:bg-[#8A6A3D] hover:text-white transition-all shadow-md backdrop-blur-xs rounded-xs cursor-pointer"
         >
           <span>Skip Intro</span>
           <FastForward className="w-3.5 h-3.5" />
