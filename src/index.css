@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* ----------------------------------------------------
+   THE RIZWAN TIMES - Ciguatera Modern Display Serif System
+   ---------------------------------------------------- */
+
+:root {
+  --font-masthead: 'Bodoni Moda', 'Italiana', 'Playfair Display', serif;
+  --font-ciguatera: 'Bodoni Moda', 'Italiana', 'Playfair Display', serif;
+  --font-headline: 'Bodoni Moda', 'Italiana', 'Playfair Display', 'Cormorant Garamond', serif;
+  --font-sc: 'Playfair Display SC', serif;
+  --font-body: 'Newsreader', 'Cormorant Garamond', 'Georgia', serif;
+  --font-typewriter: 'JetBrains Mono', 'Courier Prime', monospace;
+  --font-cinzel: 'Cinzel', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Primary Editorial Color Tokens */
+  --bg-primary: #E9DFC9;      /* Primary Warm Aged-Paper Beige */
+  --bg-paper-card: #F3E9D5;   /* Secondary Paper Card */
+  --bg-accent: #DECBB3;       /* Paper Accent Overlay */
+  --text-main: #171615;       /* Dark Ink */
+  --text-muted: #514A42;      /* Secondary Ink */
+  --border-dark: #171615;     /* Dark Ink Rule */
+  --border-light: #786B5A;    /* Muted Brown Rule */
+  --accent-red: #8A6A3D;      /* Classic Editorial Accent */
+  --accent-ink: #171615;      /* Dark Ink */
+  --shadow-paper: 0 10px 30px -5px rgba(23, 22, 21, 0.25);
+}
+
+/* Multi-Edition Themes */
+.theme-newsprint {
+  --bg-primary: #E5E5E5;
+  --bg-paper-card: #F0F0F0;
+  --bg-accent: #D6D6D6;
+  --text-main: #121212;
+  --text-muted: #484848;
+  --border-dark: #121212;
+  --border-light: #888888;
+  --accent-red: #6E532B;
+  --accent-ink: #121212;
+  --shadow-paper: 0 10px 30px -5px rgba(18, 18, 18, 0.3);
+}
+
+.theme-night {
+  --bg-primary: #12100E;
+  --bg-paper-card: #1C1815;
+  --bg-accent: #29241F;
+  --text-main: #F3E9D5;
+  --text-muted: #A39686;
+  --border-dark: #F3E9D5;
+  --border-light: #514A42;
+  --accent-red: #C49E69;
+  --accent-ink: #F3E9D5;
+  --shadow-paper: 0 12px 35px -5px rgba(0, 0, 0, 0.7);
+}
+
+.theme-broadside {
+  --bg-primary: #F9F6F0;
+  --bg-paper-card: #FFFFFF;
+  --bg-accent: #EBE5D9;
+  --text-main: #050505;
+  --text-muted: #383838;
+  --border-dark: #050505;
+  --border-light: #C2BAAA;
+  --accent-red: #8A6A3D;
+  --accent-ink: #111111;
+  --shadow-paper: 0 8px 25px -5px rgba(5, 5, 5, 0.15);
+}
+
+/* Base Body Styling */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(rgba(23, 22, 21, 0.035) 1px, transparent 1px),
+    radial-gradient(rgba(23, 22, 21, 0.015) 1px, transparent 1px);
+  background-size: 14px 14px;
+  background-position: 0 0, 7px 7px;
+}
+
+/* Font Family Utility Classes */
+.font-masthead { font-family: var(--font-masthead); letter-spacing: -0.02em; }
+.font-ciguatera { font-family: var(--font-ciguatera); }
+.font-headline { font-family: var(--font-headline); }
+.font-sc { font-family: var(--font-sc); }
+.font-body { font-family: var(--font-body); }
+.font-typewriter { font-family: var(--font-typewriter); }
+.font-cinzel { font-family: var(--font-cinzel); }
+
+/* Fluid Clamp Typography Hierarchy */
+.text-clamp-hero {
+  font-size: clamp(3.5rem, 8vw, 8.75rem);
+  line-height: 0.95;
+}
+
+.text-clamp-section {
+  font-size: clamp(2.25rem, 5vw, 5rem);
+  line-height: 1.05;
+}
+
+.text-clamp-article {
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  line-height: 1.15;
+}
+
+.text-clamp-body {
+  font-size: clamp(1rem, 1.2vw, 1.1875rem);
+  line-height: 1.6;
+}
+
+.text-clamp-meta {
+  font-size: clamp(0.625rem, 0.9vw, 0.8125rem);
+  line-height: 1.4;
+}
+
+/* Hardware-Accelerated Layer */
+.gpu-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Drop Cap Styling */
+.drop-cap::first-letter {
+  font-family: var(--font-ciguatera);
+  float: left;
+  font-size: 4.5rem;
+  line-height: 0.75;
+  padding-top: 4px;
+  padding-right: 10px;
+  color: var(--text-main);
+  font-weight: bold;
+}
+
+/* Authentic Broadsheet Rules */
+.border-double-thick {
+  border-style: double;
+  border-width: 6px;
+  border-color: var(--border-dark);
+}
+
+.border-double-medium {
+  border-style: double;
+  border-width: 4px;
+  border-color: var(--border-dark);
+}
+
+.border-newspaper-dashed {
+  border-style: dashed;
+  border-color: var(--border-dark);
+}
+
+/* Newspaper Halftone & Print Photo Effects */
+.photo-halftone {
+  filter: grayscale(100%) contrast(140%) sepia(20%);
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+}
+
+.photo-vintage {
+  filter: sepia(50%) contrast(115%) brightness(95%);
+  transition: opacity 0.3s ease;
+}
+
+.photo-modern {
+  filter: grayscale(0%) contrast(105%);
+  transition: opacity 0.3s ease;
+}
+
+/* Stamp Seal */
+.stamp-seal {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  text-transform: uppercase;
+  font-family: var(--font-cinzel);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  border: 3px solid var(--accent-red);
+  color: var(--accent-red);
+  transform: rotate(-3deg);
+  border-radius: 4px;
+  background: rgba(138, 106, 61, 0.08);
+}
+
+/* Column Rules */
+.columns-newspaper-2 {
+  column-count: 2;
+  column-gap: 2rem;
+  column-rule: 1px solid var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .columns-newspaper-2 {
+    column-count: 1;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+}
+
+/* Reduced Motion Safeguards */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
