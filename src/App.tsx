@@ -39,10 +39,18 @@ export function App() {
   const sectionOrder: SectionId[] = ['frontpage', 'projects', 'skills', 'certifications', 'contact'];
   const currentPageIdx = sectionOrder.indexOf(activeSection);
 
-  // Sync theme changes to body element class
+  // Sync theme changes to body element class & lock body scrolling during intro overlay
   useEffect(() => {
     document.body.className = `theme-${currentTheme} font-serif antialiased selection:bg-[#DECBB3] selection:text-[#171615]`;
-  }, [currentTheme]);
+    if (!hasUnfolded) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [currentTheme, hasUnfolded]);
 
   // Persist bookmarks
   useEffect(() => {
@@ -86,7 +94,7 @@ export function App() {
   // Keyboard Arrow Page-Turning Controls (Left/Right Arrow Keys)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isSearchOpen || isClippingsOpen || selectedArticle || ['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
+      if (!hasUnfolded || isSearchOpen || isClippingsOpen || selectedArticle || ['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
 
@@ -99,7 +107,7 @@ export function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSearchOpen, isClippingsOpen, selectedArticle, turnNextPage, turnPrevPage]);
+  }, [hasUnfolded, isSearchOpen, isClippingsOpen, selectedArticle, turnNextPage, turnPrevPage]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] transition-colors duration-400 newspaper-crease relative perspective-newspaper overflow-x-hidden">

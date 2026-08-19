@@ -73,7 +73,11 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#E9DFC9] text-[#171615] font-serif overflow-hidden select-none flex flex-col items-center justify-between p-4 sm:p-6">
+    <div 
+      onWheel={(e) => e.preventDefault()}
+      onTouchMove={(e) => e.preventDefault()}
+      className="fixed inset-0 z-50 bg-[#E9DFC9] text-[#171615] font-serif overflow-hidden select-none touch-none flex flex-col items-center justify-between p-4 sm:p-6 w-screen h-screen max-h-screen"
+    >
       
       {/* 1. Full-Bleed Scattered Broadsheet Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
