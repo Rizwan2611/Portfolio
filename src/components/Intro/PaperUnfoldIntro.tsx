@@ -60,7 +60,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       } else {
         clearInterval(interval);
       }
-    }, 45);
+    }, 45); // Smooth 45ms typing pace
 
     return () => clearInterval(interval);
   }, [step]);
@@ -73,9 +73,9 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none flex flex-col justify-between p-4 sm:p-8 touch-none overscroll-none">
+    <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none flex flex-col justify-between items-center">
       
-      {/* 1. Full-Page SVG Framed Cover Background with Vector Unfold Zoom */}
+      {/* 1. Full-Page SVG Cover Background with Darkness Overlay for Contrast */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <svg
           viewBox="0 0 1024 1024"
@@ -84,7 +84,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         >
           <g
             className={`transition-all duration-[1200ms] ${
-              step === 4 ? 'opacity-0' : 'opacity-85'
+              step === 4 ? 'opacity-0' : 'opacity-65'
             }`}
             style={{
               transformOrigin: '512px 512px',
@@ -105,74 +105,76 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
           </g>
         </svg>
 
-        {/* Editorial Sepia & Vignette Overlays */}
-        <div className={`absolute inset-0 bg-[#E9DFC9]/30 mix-blend-multiply transition-opacity duration-1000 pointer-events-none ${
-          step === 4 ? 'opacity-0' : 'opacity-100'
-        }`}></div>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/85 transition-opacity duration-1000 pointer-events-none ${
+        {/* High-Contrast Vignette & Dark Tint Overlay */}
+        <div className={`absolute inset-0 bg-black/65 transition-opacity duration-1000 pointer-events-none ${
           step === 4 ? 'opacity-0' : 'opacity-100'
         }`}></div>
       </div>
 
       {/* 2. Broadsheet Double Rule Frame Overlay */}
-      <div className={`absolute inset-3 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1000 ${
+      <div className={`absolute inset-3 sm:inset-6 border-4 border-double border-[#E9DFC9]/80 pointer-events-none transition-opacity duration-1000 z-10 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         <div className="w-full h-full border border-[#E9DFC9]/40 p-2"></div>
       </div>
 
-      {/* Top Bar - Skip Button */}
-      <div className="relative z-20 w-full flex justify-end">
+      {/* Skip Button Top Right */}
+      <div className="relative z-30 w-full flex justify-end p-4 sm:p-6">
         <button
           onClick={handleSkip}
-          className="flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase bg-black/70 border border-[#E9DFC9] text-[#E9DFC9] px-4 py-2 hover:bg-[#8A6A3D] hover:text-white transition-all shadow-md backdrop-blur-xs rounded-xs cursor-pointer"
+          className="flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase bg-black/80 border border-[#E9DFC9] text-[#E9DFC9] px-4 py-2 hover:bg-[#8A6A3D] hover:text-white transition-all shadow-md backdrop-blur-md rounded-xs cursor-pointer"
         >
           <span>Skip Intro</span>
           <FastForward className="w-3.5 h-3.5" />
         </button>
       </div>
 
-      {/* Center Perfectly Aligned Text Overlay Content */}
-      <div className={`relative z-20 max-w-5xl mx-auto text-center my-auto px-4 w-full flex flex-col items-center justify-center transition-all duration-1000 ${
+      {/* 3. Centered High-Contrast Text Plate Container */}
+      <div className={`relative z-30 max-w-3xl mx-auto text-center px-4 sm:px-8 w-full my-auto transition-all duration-1000 ${
         step === 4 ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
       }`}>
         
-        {/* Metadata Tag */}
-        <div className={`transition-all duration-600 transform mb-2 ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
-          <div className="text-xs sm:text-sm font-typewriter tracking-widest text-amber-300 font-bold uppercase">
-            {NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}
+        {/* Editorial Dark Card Backdrop for Perfect Text Readability */}
+        <div className="bg-black/80 backdrop-blur-md border-2 border-[#E9DFC9]/70 p-6 sm:p-10 shadow-2xl rounded-xs">
+          
+          {/* Metadata Reveal */}
+          <div className={`transition-all duration-600 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
+            <div className="flex items-center justify-center gap-2 text-xs font-typewriter tracking-widest text-amber-300 font-bold uppercase mb-2">
+              <span>{NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}</span>
+            </div>
           </div>
-        </div>
 
-        {/* Main Masthead Title */}
-        <div className={`transition-all duration-600 transform w-full ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
-          <h1 className="font-ciguatera text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase text-[#E9DFC9] tracking-tight leading-none drop-shadow-2xl my-2">
-            {NEWSPAPER_META.title}
-          </h1>
-          <div className="w-48 sm:w-80 h-1 bg-[#E9DFC9]/80 mx-auto my-4 sm:my-6"></div>
-        </div>
+          {/* Masthead Title */}
+          <div className={`transition-all duration-600 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+            <h1 className="font-ciguatera text-4xl sm:text-6xl md:text-7xl font-black uppercase text-[#F3E9D5] tracking-tight drop-shadow-xl my-2">
+              {NEWSPAPER_META.title}
+            </h1>
+            <div className="w-full h-1 bg-[#E9DFC9]/80 my-3"></div>
+          </div>
 
-        {/* Headline Typewriter Reveal */}
-        <div className="min-h-16 my-2 flex items-center justify-center">
-          {step >= 2 && (
-            <h2 className="font-ciguatera text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-wider drop-shadow-xl">
-              {headlineText}
-              <span className="animate-pulse text-amber-400">|</span>
-            </h2>
-          )}
-        </div>
+          {/* Headline Typewriter Reveal (Strictly Once) */}
+          <div className="min-h-14 my-2 flex items-center justify-center">
+            {step >= 2 && (
+              <h2 className="font-ciguatera text-2xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tight drop-shadow-2xl">
+                {headlineText}
+                <span className="animate-pulse text-amber-400 font-normal">|</span>
+              </h2>
+            )}
+          </div>
 
-        {/* Subtitle Quote */}
-        <div className={`transition-all duration-600 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <p className="font-serif italic text-base sm:text-xl md:text-2xl text-amber-100/90 max-w-3xl mx-auto drop-shadow-md leading-relaxed my-2">
-            "A Computer Science student exploring software, data, artificial intelligence and creative technology."
-          </p>
+          {/* Subtitle Reveal */}
+          <div className={`transition-all duration-600 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            <p className="font-serif italic text-sm sm:text-lg text-[#F3E9D5]/90 max-w-xl mx-auto drop-shadow-md mt-3 leading-relaxed">
+              "A Computer Science student exploring software, data, artificial intelligence and creative technology."
+            </p>
+          </div>
+
         </div>
 
       </div>
 
       {/* Footer Dateline Bar */}
-      <div className={`relative z-20 w-full text-center font-typewriter text-xs text-[#E9DFC9]/80 border-t border-[#E9DFC9]/40 pt-3 pb-2 uppercase tracking-widest font-semibold transition-opacity duration-1000 ${
+      <div className={`relative z-30 text-center font-typewriter text-xs text-[#E9DFC9] border-t border-[#E9DFC9]/40 pt-3 pb-6 uppercase tracking-widest font-semibold transition-opacity duration-1000 ${
         step === 4 ? 'opacity-0' : 'opacity-100'
       }`}>
         {NEWSPAPER_META.dateline} • EST. {NEWSPAPER_META.established}
