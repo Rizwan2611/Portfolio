@@ -13,11 +13,10 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   const fullHeadline = 'THE DIGITAL BUILDER';
 
   // SVG 1024x682 Fixed Canvas Space:
-  // Target Eye Pupil (Screen Left Eye): x = 459, y = 233
-  // Target Eye Pupil (Subject Left Eye): x = 539, y = 232
-  const eyeX = 459;
-  const eyeY = 233;
-  const zoomScale = 28;
+  // Exact Target Coordinates extracted from user's close-up crop: x = 628, y = 185
+  const eyeX = 628;
+  const eyeY = 185;
+  const zoomScale = 30;
 
   // Exact mathematical translation to pull target eye to SVG viewport center (512, 341)
   const targetTx = 512 - eyeX * zoomScale;
@@ -39,7 +38,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 5500);
 
-    // 4. Automatic ultra-slow cinematic zoom straight into left eye pupil (8500ms)
+    // 4. Automatic ultra-slow cinematic zoom straight into user's exact target eye pupil (8500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 8500);
