@@ -6,7 +6,6 @@ import {
   Bookmark, 
   Maximize2, 
   Award, 
-  Sparkles, 
   Quote, 
   ExternalLink
 } from 'lucide-react';
@@ -35,7 +34,6 @@ export const HeroFrontPage: React.FC<HeroFrontPageProps> = ({
             {/* Category & Date Tagline */}
             <div className="flex items-center justify-between font-typewriter text-xs uppercase tracking-widest text-[var(--accent-red)] font-bold mb-2">
               <span className="flex items-center gap-1.5 bg-[var(--accent-red)] text-white px-2 py-0.5 rounded-xs">
-                <Sparkles className="w-3.5 h-3.5" />
                 <span>SPECIAL FRONT PAGE COVERAGE</span>
               </span>
               <span>{LEAD_STORY.date}</span>

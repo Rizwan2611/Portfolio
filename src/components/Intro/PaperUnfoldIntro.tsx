@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, FastForward } from 'lucide-react';
+import { FastForward } from 'lucide-react';
 import { NEWSPAPER_META } from '../../data/newspaperData';
 
 interface PaperUnfoldIntroProps {
@@ -75,7 +75,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Scattered Broadsheet Newspapers Cover Background */}
+      {/* 1. Full-Page SVG Framed Cover Photo with 1:1 Vector Space Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <svg
           viewBox="0 0 1024 1024"
@@ -140,7 +140,6 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
         {/* Metadata Reveal */}
         <div className={`transition-all duration-1200 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
           <div className="flex items-center justify-center gap-2 text-xs font-typewriter tracking-widest text-amber-300 font-bold uppercase mb-3">
-            <Sparkles className="w-4 h-4 text-amber-300" />
             <span>{NEWSPAPER_META.editionName} • VOL. {NEWSPAPER_META.volumeNo} • ISSUE {NEWSPAPER_META.editionNo}</span>
           </div>
         </div>

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { soundManager } from '../../utils/audio';
-import { Sparkles, ArrowRight, Brain, Cpu, Database, Feather, Printer } from 'lucide-react';
+import { ArrowRight, Brain, Cpu, Database, Feather, Printer } from 'lucide-react';
 
 export type TransformationPhase = 'newspaper' | 'ink' | 'print' | 'data' | 'brain';
 
 const PHASES: { id: TransformationPhase; label: string; subLabel: string; icon: React.FC<{ className?: string }> }[] = [
   { id: 'newspaper', label: '1. NEWSPAPER', subLabel: 'Fleet St. Broadside', icon: Feather },
   { id: 'ink', label: '2. INK', subLabel: 'Ink & Dither Texture', icon: Printer },
-  { id: 'print', label: '3. PRINT', subLabel: 'Halftone Dot Matrix', icon: Sparkles },
+  { id: 'print', label: '3. PRINT', subLabel: 'Halftone Dot Matrix', icon: Printer },
   { id: 'data', label: '4. DATA', subLabel: 'Vector Telemetry', icon: Database },
   { id: 'brain', label: '5. DIGITAL BRAIN', subLabel: 'Neural Vector Cortex', icon: Brain },
 ];
@@ -16,7 +15,6 @@ export const SignatureTransformation: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<TransformationPhase>('newspaper');
 
   const handleNextPhase = () => {
-    soundManager.playPageTurn();
     const phaseKeys: TransformationPhase[] = ['newspaper', 'ink', 'print', 'data', 'brain'];
     const currIdx = phaseKeys.indexOf(currentPhase);
     const nextIdx = (currIdx + 1) % phaseKeys.length;
@@ -50,7 +48,6 @@ export const SignatureTransformation: React.FC = () => {
               <button
                 key={p.id}
                 onClick={() => {
-                  soundManager.playTypewriter();
                   setCurrentPhase(p.id);
                 }}
                 className={`p-2 sm:p-3 border-2 text-center transition-all flex flex-col items-center justify-between ${
