@@ -9,12 +9,12 @@ interface PaperUnfoldIntroProps {
 export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) => {
   const [step, setStep] = useState(0); // 0: Photo background, 1: Masthead, 2: Headline typewriter, 3: Subtitle, 4: Auto-Zoom Eye
   const [headlineText, setHeadlineText] = useState('');
-  const [eyeOrigin, setEyeOrigin] = useState('44.82% 31.25%');
+  const [eyeOrigin, setEyeOrigin] = useState('52.64% 31.08%');
   const [eyeTranslation, setEyeTranslation] = useState('0px, 0px');
   const hasTypedRef = useRef(false);
   const fullHeadline = 'THE DIGITAL BUILDER';
 
-  // Dynamically calculate exact pupil transform origin AND viewport centering translation
+  // Dynamically calculate exact pupil transform origin AND viewport centering translation for Rizwan's Left Eye
   useEffect(() => {
     const updatePupilOrigin = () => {
       if (typeof window === 'undefined') return;
@@ -23,9 +23,9 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       const w_img = 1024;
       const h_img = 682;
       
-      // Screen Left Eye Pupil Coordinates in 1024x682 source photo (x: 459, y: 233)
-      const eye_x = 459; 
-      const eye_y = 233;
+      // Exact Pupil Coordinates of Rizwan's Left Eye in 1024x682 source photo (x: 539, y: 232)
+      const eye_x = 539; 
+      const eye_y = 232;
 
       const scale = Math.max(w_screen / w_img, h_screen / h_img);
       const rendered_w = w_img * scale;
@@ -37,7 +37,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       const eye_screen_x = (eye_x * scale) - crop_x;
       const eye_screen_y = (eye_y * scale) - crop_y;
 
-      // Delta offset required to pull eye pupil to exact (50%, 50%) center of viewport
+      // Delta offset required to pull Rizwan's Left Eye pupil to exact (50%, 50%) center of viewport
       const dx = (w_screen / 2) - eye_screen_x;
       const dy = (h_screen / 2) - eye_screen_y;
       
@@ -69,7 +69,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 5500);
 
-    // 4. Automatic ultra-slow cinematic zoom straight into left eye pupil (8500ms)
+    // 4. Automatic ultra-slow cinematic zoom straight into Rizwan's left eye pupil (8500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 8500);
@@ -116,7 +116,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with Cinematic Slow Left-Eye Pupil Zoom */}
+      {/* 1. Full-Page Photo Cover Background with Viewport-Centering Left-Eye Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src="/rizwan_photo.png"
@@ -125,7 +125,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
             step === 4 ? 'opacity-0' : 'opacity-85'
           }`}
           style={{
-            transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center
+            transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center of Rizwan's Left Eye
             transform: step === 4 ? `translate(${eyeTranslation}) scale(30)` : 'translate(0px, 0px) scale(1)',
             willChange: 'transform, opacity', // GPU Composition Acceleration
             transitionTimingFunction: step === 4 ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-out',
