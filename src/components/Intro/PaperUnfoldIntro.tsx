@@ -60,7 +60,7 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
       setStep(3);
     }, 4500);
 
-    // 4. Automatic smooth zoom straight into left eye pupil (6500ms)
+    // 4. Automatic ultra-smooth zoom straight into left eye pupil (6500ms)
     const t4 = setTimeout(() => {
       setStep(4);
     }, 6500);
@@ -107,17 +107,18 @@ export const PaperUnfoldIntro: React.FC<PaperUnfoldIntroProps> = ({ onUnfold }) 
   return (
     <div className="fixed inset-0 z-50 bg-black text-white font-serif overflow-hidden select-none">
       
-      {/* 1. Full-Page Photo Cover Background with Mathematical Left-Eye Pupil Zoom */}
+      {/* 1. Full-Page Photo Cover Background with GPU-Accelerated Left-Eye Pupil Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src="/rizwan_photo.png"
           alt="Rizwan Salmani Full Page Portrait"
-          className={`w-full h-full object-cover transition-all duration-[2200ms] ease-in-out ${
-            step === 4 ? 'scale-[32] opacity-0' : 'scale-100 opacity-85'
+          className={`w-full h-full object-cover transition-all duration-[2400ms] ${
+            step === 4 ? 'scale-[28] opacity-0' : 'scale-100 opacity-85'
           }`}
           style={{
             transformOrigin: eyeOrigin, // Dynamic Responsive Pupil Center
-            transitionTimingFunction: step === 4 ? 'cubic-bezier(0.65, 0, 0.35, 1)' : 'ease-out',
+            willChange: 'transform, opacity', // GPU Composition Acceleration
+            transitionTimingFunction: step === 4 ? 'cubic-bezier(0.22, 1, 0.36, 1)' : 'ease-out',
           }}
         />
         {/* Editorial Sepia & Vignette Overlays */}
