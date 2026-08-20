@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { CLASSIFIED_ADS } from '../../data/newspaperData';
+import { soundManager } from '../../utils/audio';
 import { 
   Send, 
   Mail, 
   User, 
-  CheckCircle2 
+  CheckCircle2
 } from 'lucide-react';
 
 export const ClassifiedsContact: React.FC = () => {
   const [formData, setFormData] = useState({
     senderName: '',
     senderEmail: '',
-    subject: 'INQUIRY: Project Collaboration / Position Offer',
+    subject: 'INQUIRY: Data Analyst / CS Position Offer',
     message: '',
   });
 
@@ -25,11 +26,22 @@ export const ClassifiedsContact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    soundManager.playTypewriter();
 
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSent(true);
-    }, 1200);
+      soundManager.playSuccessChime();
+
+      // Launch email client pre-filled with sender message
+      const mailtoUrl = `mailto:rizwansalmani.dev@gmail.com?subject=${encodeURIComponent(
+        `[PORTFOLIO TELEGRAM] ${formData.subject} - From ${formData.senderName}`
+      )}&body=${encodeURIComponent(
+        `Sender Name: ${formData.senderName}\nReturn Email: ${formData.senderEmail}\n\nMessage:\n${formData.message}`
+      )}`;
+      
+      window.open(mailtoUrl, '_blank');
+    }, 800);
   };
 
   return (
@@ -80,7 +92,7 @@ export const ClassifiedsContact: React.FC = () => {
                     href={`mailto:${ad.contactEmail}?subject=${encodeURIComponent(ad.title)}`}
                     className="inline-flex items-center gap-1 font-typewriter text-xs font-bold text-[var(--text-main)] hover:text-[var(--accent-red)] underline pt-2 border-t border-[var(--border-light)]"
                   >
-                    <Mail className="w-3 h-3" />
+                    <Mail className="w-3.5 h-3.5" />
                     <span>{ad.contactEmail}</span>
                   </a>
                 </div>
@@ -115,17 +127,28 @@ export const ClassifiedsContact: React.FC = () => {
                     TELEGRAM TRANSMITTED SUCCESSFULLY!
                   </h4>
                   <p className="font-serif text-sm text-[var(--text-muted)] max-w-md mx-auto">
-                    Thank you, <span className="font-bold text-[var(--text-main)]">{formData.senderName}</span>. Your message has been sealed and delivered to Rizwan's press desk. Expect a swift dispatch response!
+                    Thank you, <span className="font-bold text-[var(--text-main)]">{formData.senderName}</span>. Your message has been sealed and pre-filled in your mail client addressed to <span className="font-bold text-[var(--accent-red)]">rizwansalmani.dev@gmail.com</span>.
                   </p>
-                  <button
-                    onClick={() => {
-                      setIsSent(false);
-                      setFormData({ senderName: '', senderEmail: '', subject: 'INQUIRY: Project Collaboration', message: '' });
-                    }}
-                    className="font-typewriter text-xs font-bold border-2 border-[var(--border-dark)] px-4 py-2 bg-[var(--bg-primary)] hover:bg-[var(--bg-accent)] transition-colors rounded-sm uppercase tracking-wider"
-                  >
-                    Dispatch Another Telegram
-                  </button>
+                  
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                    <a
+                      href={`mailto:rizwansalmani.dev@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(formData.message)}`}
+                      className="font-typewriter text-xs font-bold border-2 border-[var(--border-dark)] px-4 py-2 bg-[var(--accent-red)] text-white hover:bg-[var(--text-main)] transition-colors rounded-sm uppercase tracking-wider flex items-center gap-1.5"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>Open Email Client</span>
+                    </a>
+                    
+                    <button
+                      onClick={() => {
+                        setIsSent(false);
+                        setFormData({ senderName: '', senderEmail: '', subject: 'INQUIRY: Data Analyst / CS Position Offer', message: '' });
+                      }}
+                      className="font-typewriter text-xs font-bold border-2 border-[var(--border-dark)] px-4 py-2 bg-[var(--bg-primary)] hover:bg-[var(--bg-accent)] transition-colors rounded-sm uppercase tracking-wider"
+                    >
+                      Dispatch Another Telegram
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 font-typewriter text-xs">
@@ -180,8 +203,9 @@ export const ClassifiedsContact: React.FC = () => {
                       onChange={handleChange}
                       className="w-full bg-[var(--bg-primary)] border border-[var(--border-dark)] px-3 py-2 text-xs focus:outline-none focus:border-[var(--accent-red)]"
                     >
-                      <option value="INQUIRY: Full-Time Lead Role">INQUIRY: Full-Time Lead Role Offer</option>
-                      <option value="INQUIRY: AI / WebGL Consulting">INQUIRY: AI / WebGL Freelance Project</option>
+                      <option value="INQUIRY: Data Analyst / CS Position Offer">INQUIRY: Data Analyst / CS Position Offer</option>
+                      <option value="INQUIRY: Full-Stack / AI Lead Role">INQUIRY: Full-Stack / AI Lead Role</option>
+                      <option value="INQUIRY: Data Analytics / ML Consulting">INQUIRY: Data Analytics / ML Consulting</option>
                       <option value="INQUIRY: General Technical Meeting">INQUIRY: General Technical Interview / Meeting</option>
                     </select>
                   </div>
@@ -206,7 +230,7 @@ export const ClassifiedsContact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--border-dark)] text-[var(--bg-primary)] py-3 font-sc font-bold uppercase tracking-widest text-sm hover:bg-[var(--accent-red)] transition-colors rounded-sm flex items-center justify-center gap-2 shadow-xs"
+                    className="w-full bg-[var(--border-dark)] text-[var(--bg-primary)] py-3 font-sc font-bold uppercase tracking-widest text-sm hover:bg-[var(--accent-red)] transition-colors rounded-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
@@ -222,7 +246,7 @@ export const ClassifiedsContact: React.FC = () => {
                   </button>
 
                   <div className="text-[10px] text-[var(--text-muted)] text-center italic mt-2">
-                    🔒 Wire dispatches encrypted with strict confidentiality protocols.
+                    🔒 Dispatches directly pre-fill your email client addressed to <strong className="text-[var(--text-main)]">rizwansalmani.dev@gmail.com</strong>.
                   </div>
 
                 </form>
